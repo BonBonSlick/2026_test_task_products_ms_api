@@ -2,13 +2,37 @@ framework:
     messenger:
         # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
         # failure_transport: failed
-
+        default_bus: command.bus
         transports:
             # https://symfony.com/doc/current/messenger.html#transport-configuration
-            async: '%env(MESSENGER_TRANSPORT_DSN)%'
+            #            async: '%env(MESSENGER_TRANSPORT_DSN)%'
+            #            rabbitmq: 'amqp://guest:guest@messenger-hub:5672/%2F/events'
             # failed: 'doctrine://default?queue_name=failed'
             # sync: 'sync://'
+            # External RabbitMQ transport
+            rabbitmq_events:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    exchange:
+                        name: events
+                        type: topic
+                    queues:
+                        events_queue: ~
+
+        buses:
+            command.bus:
+                middleware:
+                    - validation
+
+            query.bus:
+                middleware:
+                    - validation
+
+            event.bus:
+                default_middleware: allow_no_handlers
+                middleware:
+                    - validation
 
         routing:
-            # Route your messages to the transports
-            # 'App\Message\YourMessage': async
+            # Routes specific classes to the RabbitMQ transport
+            'App\Domain\Model\Product\Event\ProductCreated': rabbitmq_events

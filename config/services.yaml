@@ -16,5 +16,10 @@ services:
     App\:
         resource: '../src/'
 
+    # Clear aliases for injection
+    Symfony\Component\Messenger\MessageBusInterface $commandBus: '@command.bus'
+    Symfony\Component\Messenger\MessageBusInterface $queryBus: '@query.bus'
+    Symfony\Component\Messenger\MessageBusInterface $eventBus: '@event.bus'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
