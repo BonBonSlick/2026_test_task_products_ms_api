@@ -13,8 +13,3 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Domain/Model'
                 prefix: 'App\Domain\Model'
                 alias: App
-
-when@test:
-    doctrine:
-        dbal:
-            dbname_suffix: '_test%env(default::TEST_TOKEN)%'

@@ -17,7 +17,9 @@ framework:
                         name: events
                         type: topic
                     queues:
-                        events_queue: ~
+                        orders_service_queue: ~
+#                        # '#' is a wildcard that means "give me every message"
+#                        binding_keys: [ '#' ]
 
         buses:
             command.bus:
@@ -35,4 +37,8 @@ framework:
 
         routing:
             # Routes specific classes to the RabbitMQ transport
-            'App\Domain\Model\Product\Event\ProductCreated': rabbitmq_events
+            Shared\Contracts\DTO\ProductCreated:
+                senders: [ rabbitmq_events ]
+                send_and_handle: false
+            Shared\Contracts\DTO\OrderCreated: rabbitmq_events
+            Shared\Contracts\DTO\ProductQuantityDecreased: rabbitmq_events

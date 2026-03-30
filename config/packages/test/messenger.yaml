@@ -1,0 +1,6 @@
+# config/packages/test/messenger.yaml
+#@todo - UNCOMMENT when ready for prod
+#framework:
+#    messenger:
+#        transports:
+#            async: 'sync' # Force all async messages to happen instantly in-memory

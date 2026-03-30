@@ -1,0 +1,4 @@
+## can be used for specific test cases e.g. unit tests without interacting with DB
+services:
+#    App\Domain\Model\Product\IProductRepository:
+#        alias: App\Infrastructure\Persistence\Repository\InMemoryProductRepository

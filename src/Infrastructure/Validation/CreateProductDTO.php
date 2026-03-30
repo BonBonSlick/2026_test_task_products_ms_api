@@ -5,41 +5,38 @@ declare(strict_types=1);
 namespace App\Infrastructure\Validation;
 
 use App\Domain\Model\Product\Product;
-use App\Domain\Model\Product\ProductTypeEnum;
+use OpenApi\Attributes as OA;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[UniqueEntity(
-    fields     : ['SKU'],
+    fields     : ['sku'],
     entityClass: Product::class,
 )]
+#[OA\Schema]
 final readonly class CreateProductDTO
 {
 
     public function __construct(
-        #[Assert\NotBlank]
-        #[Assert\Choice(choices: [ProductTypeEnum::pencil->name, ProductTypeEnum::pen->name])]
-        public string $type,
-
-        #[Assert\NotBlank]
+        #[OA\Property(description: 'The unique identifier of the product.', maxLength: 50, minLength: 2,)]
         #[Assert\Length(
             min: 2,
             max: 50,
         )]
         public string $name,
 
-        #[Assert\NotBlank]
+        #[OA\Property(description: 'The unique SKU of the product.', maxLength: 12, minLength: 2,)]
         #[Assert\Length(
             min: 2,
             max: 12,
         )]
-        public string $SKU,
+        public string $sku,
 
-        #[Assert\NotBlank]
+        #[OA\Property(description: 'Price of the product.', minimum: 0,)]
         #[Assert\PositiveOrZero]
         public string $price,
 
-        #[Assert\NotBlank]
+        #[OA\Property(description: 'Total products in stock.', minimum: 0,)]
         #[Assert\PositiveOrZero]
         public int    $quantity,
     ) {}

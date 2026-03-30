@@ -27,7 +27,7 @@ final readonly class GetProductHandler
             $criteria['name'] = $query->name;
         }
         if (null !== $query->sku) {
-            $criteria['SKU'] = $query->sku;
+            $criteria['sku'] = $query->sku;
         }
 
         return $this->productRepository->findBy(

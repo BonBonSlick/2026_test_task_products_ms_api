@@ -1,0 +1,36 @@
+# grumphp.yml
+grumphp:
+    hooks_dir: ~
+    hooks_preset: local
+    git_hook_variables:
+    stop_on_failure: true
+    ignore_unstaged_changes: false
+    hide_circumvention_tip: false
+    process_timeout: 180
+    ascii:
+        failed: ~
+        succeeded: ~
+    parallel:
+        enabled: true
+        max_workers: 4
+    fixer:
+        enabled: true
+        fix_by_default: false
+    environment:
+        files: []
+        variables: {}
+        paths: []
+    # https://github.com/phpro/grumphp/blob/v2.x/doc/tasks.md
+    tasks:
+        phpcs:
+            standard: PSR12
+            triggered_by: ['php']
+        phpunit:
+            config_file: phpunit.dist.xml
+            testsuite: games
+    # https://github.com/phpro/grumphp/blob/v2.x/doc/testsuites.md
+    testsuites:
+            git_pre_commit:
+                tasks:
+                    - phpunit
+    extensions: []

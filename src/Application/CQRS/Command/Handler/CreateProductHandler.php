@@ -21,11 +21,10 @@ final readonly class CreateProductHandler
     public function __invoke(CreateProduct $command): void {
         $this->productRepository->save(
             product: $this->productFactory->create(
-                       type    : $command->getType(),
-                       sku     : $command->getSku(),
-                       name    : $command->getName(),
-                       price   : $command->getPrice(),
-                       quantity: $command->getQuantity(),
+                       sku     : $command->sku,
+                       name    : $command->name,
+                       price   : $command->price,
+                       quantity: $command->quantity,
                    ),
         );
     }

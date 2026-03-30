@@ -42,7 +42,6 @@
     </source>
 
     <extensions>
-        <!-- use this with PHPUnit 10 or newer -->
         <bootstrap class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension"/>
     </extensions>
 </phpunit>

@@ -6,15 +6,14 @@ namespace App\Infrastructure\Factory;
 
 use App\Domain\Model\Product\IProductFactory;
 use App\Domain\Model\Product\Product;
-use App\Domain\Model\Product\ProductTypeEnum;
 
 final class ProductFactory implements IProductFactory
 {
 
-    public function create(ProductTypeEnum $type, string $sku, string $name, string $price, int $quantity): Product {
-        return new ($type->value)(
+    public function create(string $sku, string $name, string $price, int $quantity): Product {
+        return new Product(
             name    : $name,
-            SKU     : $sku,
+            sku     : $sku,
             price   : $price,
             quantity: $quantity,
         );
