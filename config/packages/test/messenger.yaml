@@ -1,6 +1,4 @@
-# config/packages/test/messenger.yaml
-#@todo - UNCOMMENT when ready for prod
-#framework:
-#    messenger:
-#        transports:
-#            async_priority_normal: 'in-memory://'
+framework:
+    messenger:
+        transports:
+            async_priority_normal: 'in-memory://'

@@ -1,26 +1,24 @@
 framework:
     messenger:
         # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
-        failure_transport: failed
+        failure_transport: failure_default_transport
         default_bus: command.bus
         transports:
             # https://symfony.com/doc/current/messenger.html#transport-configuration
             #            async: '%env(MESSENGER_TRANSPORT_DSN)%'
             #            rabbitmq: 'amqp://guest:guest@messenger-hub:5672/%2F/events'
-            # failed: 'doctrine://default?queue_name=failed'
+            failure_default_transport: 'doctrine://default?queue_name=failed'
             # sync: 'sync://'
             # External RabbitMQ transport
-            rabbitmq_events:
-                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+
+            #  This transport for producing messages related to products, but it can also consume from the same queue if needed.
+            products_transport:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%/product'
                 options:
-                    exchange:
-                        name: events
-                        type: topic
                     queues:
-                        products_orders_queue: ~
-                # retry strategy configuration
+                        products_queue: ~
                 retry_strategy:
-                    max_retries: 3
+                    max_retries: 5
                     # time to wait before the first retry (in milliseconds)
                     delay: 5000
                     # multiplier applied to the delay on each subsequent retry
@@ -31,7 +29,26 @@ framework:
                     # randomness factor (between 0 and 1.0) added to each delay to
                     # prevent multiple failed messages from being retried simultaneously
                     jitter: 0.1
-            failed: 'doctrine://default?queue_name=failed'
+
+            # The transport configures queues for consuming messages. You can have multiple queues for the same transport,
+            #  and bind them to different exchanges with different routing keys.
+            orders_transport:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%/order'
+                options:
+                    queues:
+                        orders_queue: ~
+                retry_strategy:
+                    max_retries: 5
+                    # time to wait before the first retry (in milliseconds)
+                    delay: 5000
+                    # multiplier applied to the delay on each subsequent retry
+                    # (e.g. with a 1000 ms delay, a 2 multiplier means: 1s, 2s, 4s, ...)
+                    multiplier: 2
+                    # maximum delay allowed regardless of the multiplier (0 means no limit)
+                    max_delay: 0
+                    # randomness factor (between 0 and 1.0) added to each delay to
+                    # prevent multiple failed messages from being retried simultaneously
+                    jitter: 0.1
 
         buses:
             command.bus:
@@ -57,7 +74,5 @@ framework:
 
         routing:
             # Routes specific classes to the RabbitMQ transport
-            Shared\Contracts\DTO\ProductCreated:
-                senders: [ rabbitmq_events ]
-                send_and_handle: false
-            Shared\Contracts\DTO\ProductQuantityDecreased: rabbitmq_events
+            Shared\Contracts\DTO\OrderCreated: orders_transport
+            Shared\Contracts\DTO\Product\*: products_transport
