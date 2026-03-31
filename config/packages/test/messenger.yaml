@@ -3,4 +3,4 @@
 #framework:
 #    messenger:
 #        transports:
-#            async: 'sync' # Force all async messages to happen instantly in-memory
+#            async_priority_normal: 'in-memory://'

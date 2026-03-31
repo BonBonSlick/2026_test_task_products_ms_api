@@ -24,7 +24,7 @@ class ProductWebTest extends WebTestCase
     /**
      * @throws JsonException
      */
-    public function testCreateProduct(): string {
+    public function testCreateProduct(): void {
         $client = static::createClient();
         $client->request(
             method    : Request::METHOD_POST,
@@ -43,8 +43,6 @@ class ProductWebTest extends WebTestCase
         self::assertSame('Pen', $response->name);
         self::assertSame('pen1', $response->sku);
         self::assertSame(10, $response->quantity);
-
-        return $response->id;
     }
 
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\CQRS\Command\Handler;
 
+use App\Domain\Interface\ICommandHandler;
 use Shared\Contracts\DTO\OrderCreated;
 use Shared\Contracts\DTO\ProductQuantityDecreased;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -11,7 +12,7 @@ use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsMessageHandler]
-final class OrderCreatedHandler
+final class OrderCreatedHandler implements ICommandHandler
 {
 
     public function __construct(private readonly MessageBusInterface $eventBus) {}

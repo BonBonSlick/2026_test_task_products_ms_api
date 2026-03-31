@@ -15,9 +15,11 @@ use OpenApi\Attributes as OA;
 use Shared\Contracts\DTO\ProductCreated;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
+use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Attribute\Route;
@@ -53,7 +55,7 @@ final class ProductController extends AbstractController
             ),
         ]
     )]
-    #[Route('/create', name: 'create', methods: ['POST'])]
+    #[Route('/create', name: 'create', methods: [Request::METHOD_POST])]
     public function create(#[MapRequestPayload] CreateProductDTO $dto): JsonResponse {
         $this->commandBus->dispatch(
             new CreateProduct(
@@ -105,7 +107,7 @@ final class ProductController extends AbstractController
             ),
         ]
     )]
-    #[Route('/list', name: 'list', methods: ['GET'])]
+    #[Route('/list', name: 'list', methods: [Request::METHOD_GET])]
     public function list(): JsonResponse {
         return $this->json(
             data   : $this->queryBus
@@ -136,7 +138,7 @@ final class ProductController extends AbstractController
             ),
         ]
     )]
-    #[Route('/{id}', name: 'info', methods: ['GET'])]
+    #[Route('/{id}', name: 'info', methods: [Request::METHOD_GET])]
     public function show(Product $product): JsonResponse {
         return $this->json(
             data   : $product,

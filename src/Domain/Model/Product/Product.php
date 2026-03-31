@@ -11,6 +11,7 @@ use Shared\Contracts\Model\AbstractProduct;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[OA\Schema]
+#[ORM\Table(name: 'products')]
 class Product extends AbstractProduct
 {
 
@@ -22,8 +23,11 @@ class Product extends AbstractProduct
         $this->price = $price;
     }
 
-    public function updateQuantity(int $quantity): void {
-        $this->quantity = $quantity;
+    public function increaseQuantity(int $quantity): void {
+        $this->quantity += $quantity;
     }
 
+    public function decreaseQuantity(int $quantity): void {
+        $this->quantity -= $quantity;
+    }
 }

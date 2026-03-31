@@ -11,11 +11,11 @@
         "ext-iconv": "*",
         "doctrine/doctrine-migrations-bundle": "^3.7",
         "phpdocumentor/reflection-docblock": "^5.6.7",
-        "phpro/grumphp": "^2.19",
         "phpstan/phpdoc-parser": "^2.3.2",
         "symfony/amqp-messenger": "^8.0.6",
         "symfony/console": "^8.0.7",
         "symfony/doctrine-bridge": "^8.0.7",
+        "symfony/doctrine-messenger": "8.0.*",
         "symfony/dotenv": "^8.0.7",
         "symfony/event-dispatcher": "^8.0.4",
         "symfony/flex": "^2.10",
@@ -28,13 +28,14 @@
         "symfony/uid": "^8.0.4",
         "symfony/validator": "^8.0.7",
         "symfony/yaml": "^8.0.6",
-        "test-task-shared/core-contracts": "v1.0.1"
+        "test-task-shared/core-contracts": "v1.0.2"
     },
     "require-dev": {
+        "phpro/grumphp": "^2.19",
         "dama/doctrine-test-bundle": "^8.6",
         "doctrine/doctrine-fixtures-bundle": ">=4.3.1",
-        "nelmio/api-doc-bundle": "^5.9",
-        "phpunit/phpunit": "^13.0.5",
+        "nelmio/api-doc-bundle": "^5.9.5",
+        "phpunit/phpunit": "^13.0.6",
         "symfony/browser-kit": "^8.0.4",
         "symfony/css-selector": "^8.0.6",
         "symfony/maker-bundle": "^1.67"

@@ -1,7 +1,7 @@
 framework:
     messenger:
         # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
-        # failure_transport: failed
+        failure_transport: failed
         default_bus: command.bus
         transports:
             # https://symfony.com/doc/current/messenger.html#transport-configuration
@@ -17,21 +17,41 @@ framework:
                         name: events
                         type: topic
                     queues:
-                        orders_service_queue: ~
-#                        # '#' is a wildcard that means "give me every message"
-#                        binding_keys: [ '#' ]
+                        products_orders_queue: ~
+                # retry strategy configuration
+                retry_strategy:
+                    max_retries: 3
+                    # time to wait before the first retry (in milliseconds)
+                    delay: 5000
+                    # multiplier applied to the delay on each subsequent retry
+                    # (e.g. with a 1000 ms delay, a 2 multiplier means: 1s, 2s, 4s, ...)
+                    multiplier: 2
+                    # maximum delay allowed regardless of the multiplier (0 means no limit)
+                    max_delay: 0
+                    # randomness factor (between 0 and 1.0) added to each delay to
+                    # prevent multiple failed messages from being retried simultaneously
+                    jitter: 0.1
+            failed: 'doctrine://default?queue_name=failed'
 
         buses:
             command.bus:
                 middleware:
                     - validation
+                    - doctrine_transaction
 
             query.bus:
                 middleware:
                     - validation
 
             event.bus:
-                default_middleware: allow_no_handlers
+                default_middleware:
+                    enabled: true
+                    # set "allow_no_handlers" to true (default is false) to allow having
+                    # no handler configured for this bus without throwing an exception
+                    allow_no_handlers: true
+                    # set "allow_no_senders" to false (default is true) to throw an exception
+                    # if no sender is configured for this bus
+                    allow_no_senders: false
                 middleware:
                     - validation
 
@@ -40,5 +60,4 @@ framework:
             Shared\Contracts\DTO\ProductCreated:
                 senders: [ rabbitmq_events ]
                 send_and_handle: false
-            Shared\Contracts\DTO\OrderCreated: rabbitmq_events
             Shared\Contracts\DTO\ProductQuantityDecreased: rabbitmq_events

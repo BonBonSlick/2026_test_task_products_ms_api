@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../vendor/symfony/dependency-injection/Loader/schema/services.schema.json
 # This file is the entry point to configure your own services.
 # Files in the packages/ subdirectory configure your dependencies.
 
@@ -26,3 +27,14 @@ services:
 
     App\Domain\Model\Product\IProductRepository:
         alias: App\Infrastructure\Persistence\Repository\ProductRepository
+
+    _instanceof:
+        # will be registered on the command.bus bus
+        App\Domain\Interface\ICommandHandler:
+            tags:
+                - { name: messenger.message_handler, bus: command.bus }
+
+        # registered on the query.bus bus
+        App\Domain\Interface\IQueryHandler:
+            tags:
+                - { name: messenger.message_handler, bus: query.bus }
