@@ -21,6 +21,7 @@
         "symfony/flex": "^2.10",
         "symfony/framework-bundle": "^8.0.8",
         "symfony/messenger": "^8.0.8",
+        "symfony/monolog-bundle": "*",
         "symfony/property-access": "^8.0.8",
         "symfony/property-info": "^8.0.8",
         "symfony/runtime": "^8.0.8",
