@@ -9,10 +9,11 @@ interface IProductRepository
 
     public function findById(string $uuid): ?Product;
 
-    public function findBy(array      $criteria,
-                           array|null $orderBy = null,
-                           int|null   $limit = null,
-                           int|null   $offset = null,
+    public function findBy(
+        array      $criteria,
+        array|null $orderBy = null,
+        int|null   $limit = null,
+        int|null   $offset = null,
     ): array;
 
 }

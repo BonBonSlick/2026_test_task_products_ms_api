@@ -8,7 +8,6 @@ use App\Domain\Model\Product\IProductRepository;
 use App\Domain\Model\Product\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Uid\Uuid;
 
 /**
  * @extends ServiceEntityRepository<Product>
@@ -36,4 +35,5 @@ final class ProductRepository extends ServiceEntityRepository implements IProduc
     public function findAllProducts(): array {
         return $this->findAll();
     }
+
 }

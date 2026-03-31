@@ -26,4 +26,5 @@ class Product extends AbstractProduct
     public function increaseQuantity(int $quantity): void {
         $this->quantity += $quantity;
     }
+
 }
