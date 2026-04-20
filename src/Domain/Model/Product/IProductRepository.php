@@ -9,6 +9,8 @@ interface IProductRepository
 
     public function findById(string $uuid): ?Product;
 
+    public function decreaseStock(string $uuid, int $quantity): int;
+
     public function findBy(
         array      $criteria,
         array|null $orderBy = null,

@@ -23,24 +23,22 @@ final readonly class OrderCreatedHandler implements ICommandHandler
      * @throws ExceptionInterface
      */
     public function __invoke(OrderCreated $dto): void {
-        $product = $this->productRepository->findById($dto->productID);
+        $productId               = $dto->productID;
+        $isProductStockDecreased = (bool)$this->productRepository->decreaseStock($productId, $dto->quantity);
 
-        if ($product->quantity() >= $dto->quantity) {
-            $event = new ProductQuantityDecreased(
-                productID      : $product->id()->toRfc4122(),
+        if (true === $isProductStockDecreased) {
+            $product = $this->productRepository->findById($dto->productID);
+            $event   = new ProductQuantityDecreased(
+                productID      : $productId,
                 orderID        : $dto->orderID,
                 updatedQuantity: $product->quantity(),
             );
-
-            $product->decreaseQuantity($dto->quantity);
         } else {
             $event = new ProductOutOfStock(
-                productID: $product->id()->toRfc4122(),
+                productID: $productId,
                 orderID  : $dto->orderID,
             );
         }
-
-        $this->productRepository->save($product);
 
         $this->eventBus->dispatch(message: $event);
     }

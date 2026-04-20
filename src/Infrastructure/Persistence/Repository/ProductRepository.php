@@ -25,6 +25,25 @@ final class ProductRepository extends ServiceEntityRepository implements IProduc
         $manager->flush();
     }
 
+    public function decreaseStock(string $uuid, int $quantity): int {
+        $manager      = $this->getEntityManager();
+        $affectedRows = $manager
+            ->createQuery(
+                'UPDATE ' . Product::class . ' product
+                     SET product.quantity = product.quantity - :quantity
+                     WHERE product.id = :uuid
+                        AND product.quantity >= :quantity',
+            )
+            ->setParameter('uuid', $uuid, 'uuid')
+            ->setParameter('quantity', $quantity)
+            ->execute()
+        ;
+
+        $manager->clear();
+
+        return (int)$affectedRows;
+    }
+
     public function findById(string $id): ?Product {
         return $this->find($id);
     }
